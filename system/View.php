@@ -6,29 +6,25 @@ class View
 {
     public static function render($view)
     {
-        $content = file_get_contents(BASEPATH . 'views/' . $view . '.php');
         ob_start();
-        return include BASEPATH . 'views/' . $view . '.php';
+        include BASEPATH . 'views/' . $view . '.php';
+        $view = ob_get_contents();
         ob_end_clean();
+        return $view;
     }
 
     public static function send($html, $args = []) {
-        // print_r($args);
-        $html = self::render($html);
-
-        $arr = null;
 
         if(count($args) > 0) {
-            
-            array_walk($args, function($value, $key) use(&$arr){
-                $arr["/\{\{\\\${$key}\}\}/"] = fn($match) => $value;
-            });
-            // print_r($arr);
-            $html = preg_replace_callback_array($arr, $html);
-            return $html;
-        } else {
-            return $html;
+            foreach ($args as $key => $value) {
+                $$key =  $args[$key];
+            }
         }
+        ob_start();
+        include BASEPATH . 'views/' . $html . '.php';
+        $view = ob_get_contents();
+        ob_end_clean();
+        return $view;
 
     }
 }
