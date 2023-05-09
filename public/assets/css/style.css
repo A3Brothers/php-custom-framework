@@ -1,0 +1,47 @@
+body {
+    margin: 0; padding: 0;
+    box-sizing: border-box;
+}
+
+.nav {
+    height: 5rem;
+    width: 100%;
+    background-color: rgb(155, 220, 252);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 3rem;
+    background: linear-gradient(to right, rgb(249, 241, 0), rgb(255, 172, 71));
+    margin: 10px;
+    cursor: pointer;
+}
+
+.right-side {
+    width: 50%;
+    padding-right: 10px;
+}
+
+.nav-right-items {
+    float: right;
+    margin: 2px;
+}
+
+.nav-btn {
+    background-color: rgb(255, 164, 164);
+    color: white;
+    border-radius: 5px;
+    width: auto;
+    height: 2rem;
+    padding: 3px;
+    font-weight: bolder;
+}
+
+.nav-btn:hover {
+    background-color: rgb(244, 71, 71);
+    color: white;
+    cursor: pointer;
+
+}

@@ -30,6 +30,6 @@ class ControllerInvoker
             }
             
         }
-        return call_user_func_array($controller instanceof \Closure ? $controller : [$controller[0], $controller[1]], $dependencies);
+        return call_user_func_array($controller instanceof \Closure ? $controller : [new $controller[0], $controller[1]], $dependencies);
     }
 }

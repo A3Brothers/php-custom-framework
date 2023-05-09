@@ -8,21 +8,21 @@ class Route
 {
     public static $routes = [];
 
-    public static function get($path, $handler)
+    public function get($path, $handler)
     {
         self::$routes['get'][$path] = $handler;
     }
 
-    public static function post($path, $handler)
+    public function post($path, $handler)
     {
         self::$routes['post'][$path] = $handler;
 
     }
 
-    public static function dispatch($httpMethod, $uri)
+    public function dispatch($httpMethod, $uri)
     {
-        if(isset(self::$routes[$httpMethod][$uri])) {
-            $handler = self::$routes[$httpMethod][$uri];
+        if(isset(static::$routes[$httpMethod][$uri])) {
+            $handler = static::$routes[$httpMethod][$uri];
             $container = new Container();
             $invokable = new ControllerInvoker($container);
             $invokable($handler);

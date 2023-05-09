@@ -1,21 +1,18 @@
 <?php
 
 use System\Route;
-use App\Http\Controller\App;
-use App\Http\Controller\Cws;
-use App\Http\Controller\Info;
-use App\Http\Controller\Test;
+use App\Http\Controller\{HomeController, AuthController};
+use System\App;
+use System\Config;
 
-Route::get('/', [App::class, 'index']);
-Route::get('/test', [App::class, 'view']);
-Route::get('/home', function(Test $test) {
-    echo "Welcome to home page! " . $test->say();
-});
-route::get('/info', [Info::class, 'index']);
-route::get('/server', function () {
-    print_r($_SERVER);
-});
-Route::get('/abdullah', [Cws::class, 'index']);
-Route::post('/abdullah', [Cws::class, 'create']);
+$route = new Route;
+$route->get('/', [HomeController::class, 'index']);
+$route->get('/register', [AuthController::class, 'index']);
+$route->post('/register', [AuthController::class, 'create']);
+$route->get('/login', [AuthController::class, 'login']);
+$route->post('/login', [AuthController::class, 'postLogin']);
+$route->get('/dashboard', [HomeController::class, 'dashboard']);
+$route->get('/logout', [AuthController::class, 'logout']);
 
-require_once '../config/routes.php';
+
+(new App)->make($route, $_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI'], (new Config()));
