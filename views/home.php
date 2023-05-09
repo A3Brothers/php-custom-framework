@@ -13,7 +13,7 @@
 <body>
     <?php include_once BASEPATH . 'views/includes/navbar.php' ?>
     <?php include_once BASEPATH . 'views/includes/alerts.php' ?>
-    <h1>Welcome Home</h1>
+    <h1 class="text-4xl font-bold m-auto w-1/2 text-center pt-20">Welcome Home</h1>
 </body>
 
 </html>

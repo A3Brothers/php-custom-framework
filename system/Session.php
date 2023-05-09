@@ -25,6 +25,11 @@ class Session
         return $_SESSION[$key] ?? $default;
     }
 
+    public function has($key)
+    {
+        return isset($_SESSION[$key]);
+    }
+
     public function forget($key)
     {
         unset($_SESSION[$key]);
@@ -52,13 +57,13 @@ class Session
 
     public function getMessage($messageKey)
     {
-        if ($this->get('messages') && $this->get('messages')[$messageKey]) {
+        if ($this->get('messages') !== null && isset($this->get('messages')[$messageKey])) {
             $message = $this->get('messages')[$messageKey]['message'];
             $stay = $this->get('messages')[$messageKey]['stay'];
-            if ($this->get('messages')[$messageKey]['stay'] === 0) {
+            if ($this->get('messages')[$messageKey]['stay'] < 1) {
                 unset($_SESSION['messages'][$messageKey]);
                 $message = null;
-            }else{
+            }else {
                 $messages = $this->get('messages');
                 $stay -= 1;
                 $messages[$messageKey]['stay'] = $stay;
