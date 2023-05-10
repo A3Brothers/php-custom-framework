@@ -1,0 +1,12 @@
+#!/usr/bin/env php
+
+<?php
+$cmd = $argv[1] ?? null;
+$port = $argv[2] ?? 8010;
+
+$args = ['serve', 'server'];
+
+$url = "127.0.0.1:$port";
+$dir = __DIR__ . DIRECTORY_SEPARATOR . "public";
+if(!is_null($cmd) && in_array($cmd, $args)) `cd $dir && php -S $url`;
+else return null;
