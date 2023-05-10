@@ -3,7 +3,7 @@
         <a href="/"><span class="logo">A3</span></a>
     </div>
     <div class="right-side">
-        <?php if(isset($_SESSION['user_id'])): ?>
+        <?php if(auth()): ?>
             <div class="nav-right-items"><a href="/dashboard"><button class="nav-btn">Dashboard</button></a></div>
             <div class="nav-right-items"><a href="/logout"><button class="nav-btn">Logout</button></a></div>
         <?php else: ?>

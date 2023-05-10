@@ -2,7 +2,9 @@
 
 namespace System;
 
-class Auth 
+use App\Model\User;
+
+class Auth
 {
     private static $user = null;
 
@@ -14,13 +16,13 @@ class Auth
 
     public function __get($name)
     {
-        if(isset(static::$user[$name])) return static::$user[$name];
+        if (isset(static::$user[$name])) return static::$user[$name];
         else return null;
     }
 
     public function __call($name, $arguments)
     {
-        if(isset(static::$user[$name])) return static::$user[$name];
+        if (isset(static::$user[$name])) return static::$user[$name];
         else return null;
     }
 
@@ -36,7 +38,24 @@ class Auth
 
     public function guest()
     {
-        return ! $this->check();
+        return !$this->check();
     }
 
+    public function attempt($email, $password)
+    {
+        $user = new User();
+
+        $user = $user->select()->where('email', $email)->first();
+
+        if (!$user) {
+            return false;
+        }
+
+        if (password_verify($password, $user['password'])) {
+            ((new App)->session)->set('user', $user);
+            return true;
+        }
+
+        return false;
+    }
 }

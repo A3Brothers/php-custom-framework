@@ -6,16 +6,21 @@ use App\Model\User;
 use System\View;
 use PDO;
 use System\App;
+use System\Auth;
 
 class AuthController
 {
     private $session;
     private $guestMid;
+    private $auth;
+    private $user;
 
     public function __construct()
     {
         $this->session = (new App)->session;
         $this->guestMid = new RedirectMiddleware;
+        $this->auth = new Auth();
+        $this->user = new User();
 
     }
     public function index()
@@ -29,13 +34,17 @@ class AuthController
     public function create()
     {
         $this->guestMid->handle();
+        $hashed = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        $user = $this->user->insert(['name' => $_POST['name'], 'email' => $_POST['email'], 'password' => $hashed]);
 
-        $user = new User();
-
-        $result = $user->create($_POST['name'], $_POST['email'], $_POST['password']);
-        View::withSuccess('User has been registered successfully!');
-        View::redirect('/login');
-
+        if($user) {
+            View::withSuccess('User has been registered successfully!');
+            View::redirect('/login');
+        } else {
+            View::withError('Something went wrong!');
+            View::redirect('/register');
+        }
+        
     }
 
     public function login()
@@ -50,13 +59,15 @@ class AuthController
     {
         $this->guestMid->handle();
         
-        $user = new User();
-
-        $userFound = $user->find($_POST['email'], $_POST['password']);
-        $this->session->set('user_id', $userFound['id']);
-        $this->session->set('user', $userFound);
-        View::withSuccess('Successfully logged in!');
-        View::redirect('/dashboard');
+        $userFound = $this->auth->attempt($_POST['email'], $_POST['password']);
+        if($userFound) {
+            View::withSuccess('Successfully logged in!');
+            View::redirect('/dashboard');
+        } else {
+            View::withError('User not found!');
+            View::redirect('/login');
+        }
+        
 
     }
 
