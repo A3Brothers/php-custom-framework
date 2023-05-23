@@ -2,10 +2,12 @@
 
 namespace System;
 
-use System\ControllerInvoker;
-
 class Route
 {
+    public function __construct(private Container $container)
+    {
+
+    }
     public static $routes = [];
 
     public function get($path, $handler)
@@ -23,10 +25,16 @@ class Route
     {
         if(isset(static::$routes[$httpMethod][$uri])) {
             $handler = static::$routes[$httpMethod][$uri];
-            $container = new Container();
-            $invokable = new ControllerInvoker($container);
-            $invokable($handler);
-            return;
+            
+            if ($handler instanceof \Closure) {
+                return call_user_func($handler, []);
+                
+            }else{
+                [$class, $method] = $handler;
+                $obj = $this->container->get($class);
+
+                return call_user_func_array([$obj, $method], []);
+            }
         }
 
         http_response_code(404);

@@ -2,17 +2,16 @@
 
 namespace App\Http\Middleware;
 
-use System\Auth;
+use App\Facade\Auth;
 use System\Contract\MiddlewareInterface;
-use System\View;
+use App\Facade\View;
 
 class RedirectMiddleware implements MiddlewareInterface
 {
     public function handle()
     {
-        $auth = new Auth;
-        $user = $auth->user()->guest();
-        if(!$auth->user()->guest()){
+        Auth::user()->guest();
+        if (!Auth::user()->guest()) {
             View::withError('Only guest users allowed!');
             View::redirect('/');
             exit;

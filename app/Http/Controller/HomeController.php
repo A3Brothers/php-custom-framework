@@ -2,8 +2,9 @@
 
 namespace App\Http\Controller;
 
+use App\Facade\View;
 use App\Http\Middleware\AuthMiddleware;
-use System\View;
+// use System\View;
 
 class HomeController
 {
@@ -17,12 +18,12 @@ class HomeController
 
     public function index()
     {
-        echo View::send('home');
+        return View::send('home');
     }
 
     public function dashboard() 
     {
         $this->authMid->handle();
-        echo View::send('dashboard');
+        return View::send('dashboard');
     }
 }

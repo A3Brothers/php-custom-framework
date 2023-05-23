@@ -5,7 +5,7 @@ namespace System;
 class View
 {
 
-    public static function render($view)
+    public function render($view)
     {
         ob_start();
         include BASEPATH . 'views/' . $view . '.php';
@@ -14,7 +14,7 @@ class View
         return $view;
     }
 
-    public static function send($html, $args = [])
+    public function send($html, $args = [])
     {
 
         if (count($args) > 0) {
@@ -29,27 +29,26 @@ class View
         return $view;
     }
 
-    public static function redirect($path, $args = [])
+    public function redirect($path, $args = [])
     {
         if (!empty($args)) {
             $query = http_build_query($args, '', '&', PHP_QUERY_RFC3986);
             $path .= (strpos($path, '?') === false ? '?' : '&') . $query;
         }
-
         header("Location: $path");
     }
 
-    public static function withSuccess($message)
+    public function withSuccess($message)
     {
-        self::with('success', $message);
+        $this->with('success', $message);
     }
 
-    public static function withError($message)
+    public function withError($message)
     {
-        self::with('error', $message);
+        $this->with('error', $message);
     }
 
-    public static function with($key, $message)
+    public function with($key, $message)
     {
         $session = (new App)->session;
         $messages = $session->get('messages', []);

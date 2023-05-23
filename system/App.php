@@ -2,11 +2,14 @@
 
 namespace System;
 
+use App\Http\Middleware\RedirectMiddleware;
+use System\Contract\MiddlewareInterface;
+
 class App
 {
     private static $instances = [];
 
-    public function make(Route $route, $httpMethod, $uri, Config $config)
+    public function make(Container $container, Route $route, $httpMethod, $uri, Config $config)
     {
         if (!isset(static::$instances['db'])) {
             $database = $config->config()['database'];
@@ -17,8 +20,8 @@ class App
             static::$instances['session'] = new Session;
             static::$instances['session']->start();
         }
-
-        $route->dispatch(strtolower($httpMethod), $uri);
+        $container->bind(MiddlewareInterface::class, fn(Container $container)=> new RedirectMiddleware(new Auth));
+        echo $route->dispatch(strtolower($httpMethod), $uri);
     }
 
     public function __get($name)
