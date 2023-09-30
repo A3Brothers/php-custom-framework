@@ -1,1 +1,0 @@
-{"version":1,"defects":{"Test\\Unit\\ExampleTest::test_equals":7,"Test\\Feature\\AuthTest::test_index":5},"times":{"Test\\Unit\\ExampleTest::test_equals":0.008,"Test\\Feature\\ExampleTest::test_equals":0.001,"Test\\Feature\\AuthTest::test_index":0.015}}
